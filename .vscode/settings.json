@@ -1,5 +1,0 @@
-{
-  "python.analysis.extraPaths": [
-    "./TA-MaaS360/bin/ta_maas360/aob_py3"
-  ]
-}

@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "2.0.0",
+  "info": {
+    "title": "IBM MaaS360 Add-on for Splunk",
+    "id": {
+      "group": null,
+      "name": "TA-MaaS360",
+      "version": "1.0.1"
+    },
+    "author": [
+      {
+        "name": "Stjubit",
+        "email": "julian.kaufmann@nts.eu",
+        "company": "NTS AG"
+      }
+    ],
+    "releaseDate": null,
+    "description": "Splunk Technical Add-on that allows you to onboard IBM MaaS360 data into Splunk",
+    "classification": {
+      "intendedAudience": null,
+      "categories": [],
+      "developmentStatus": null
+    },
+    "commonInformationModels": null,
+    "license": {
+      "name": null,
+      "text": null,
+      "uri": null
+    },
+    "privacyPolicy": {
+      "name": null,
+      "text": null,
+      "uri": null
+    },
+    "releaseNotes": {
+      "name": null,
+      "text": "./README.txt",
+      "uri": null
+    }
+  },
+  "dependencies": null,
+  "tasks": null,
+  "inputGroups": null,
+  "incompatibleApps": null,
+  "platformRequirements": null,
+  "supportedDeployments": [
+    "*"
+  ],
+  "targetWorkloads": [
+    "_search_heads",
+    "_forwarders"
+  ]
+}

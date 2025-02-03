@@ -87,11 +87,13 @@ All events with this event type are tagged with `inventory`. You can use this ta
 
 ## Troubleshooting
 
-The TA writes logs into `_internal`. You can use the following search for troubleshooting/monitoring purposes:
+The TA writes logs into `_internal` with the following sourcetypes:
 
-```
-index="_internal" sourcetype="tamaas360:log"
-```
+- `ibm:maas360:device:talog`
+- `ibm:maas360:compliance:talog`
+- `ibm:maas360:accountvalidation:talog`
+
+**Example search:** `index="_internal" sourcetype="ibm:maas360:device:talog"`
 
 Optionally, raise the Log Level on the App Configuration page:
 

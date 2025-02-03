@@ -1,0 +1,636 @@
+{
+    "meta": {
+        "name": "TA-MaaS360",
+        "displayName": "IBM MaaS360 Add-on for Splunk",
+        "version": "0.0.0+443a68c",
+        "restRoot": "TA_MaaS360",
+        "schemaVersion": "0.0.9"
+    },
+    "pages": {
+        "configuration": {
+            "title": "Configuration",
+            "description": "Set up your add-on",
+            "tabs": [
+                {
+                    "name": "account",
+                    "title": "Account",
+                    "restHandlerModule": "maas360_account_external_handler",
+                    "restHandlerClass": "MaaS360ExternalHandler",
+                    "table": {
+                        "header": [
+                            {
+                                "field": "name",
+                                "label": "Account name"
+                            },
+                            {
+                                "field": "api_root_host",
+                                "label": "API Root Host"
+                            },
+                            {
+                                "field": "billing_id",
+                                "label": "Billing ID"
+                            },
+                            {
+                                "field": "app_id",
+                                "label": "App ID"
+                            },
+                            {
+                                "field": "username",
+                                "label": "Username"
+                            }
+                        ],
+                        "actions": [
+                            "edit",
+                            "delete",
+                            "clone"
+                        ]
+                    },
+                    "entity": [
+                        {
+                            "field": "name",
+                            "label": "Account name",
+                            "type": "text",
+                            "required": true,
+                            "help": "Enter a unique name for this account.",
+                            "validators": [
+                                {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 50,
+                                    "errorMsg": "Length of Account name should be between 1 and 50"
+                                },
+                                {
+                                    "type": "regex",
+                                    "pattern": "^[a-zA-Z]\\w*$",
+                                    "errorMsg": "Account name must start with a letter and followed by alphabetic letters, digits or underscores."
+                                }
+                            ]
+                        },
+                        {
+                            "field": "api_root_host",
+                            "label": "API Root Host",
+                            "type": "text",
+                            "required": true,
+                            "help": "MaaS360 API Root Host (M1: services.fiberlink.com, M2: services.m2.maas360.com, M3: services.m3.maas360.com)",
+                            "validators": [
+                                {
+                                    "type": "url",
+                                    "errorMsg": "ROOT_WS_URL has to be a valid host!"
+                                }
+                            ]
+                        },
+                        {
+                            "field": "billing_id",
+                            "label": "Billing ID",
+                            "type": "text",
+                            "required": true,
+                            "help": "Enter the Billing ID",
+                            "validators": [
+                                {
+                                    "type": "number",
+                                    "range": [
+                                        1,
+                                        99999999999
+                                    ],
+                                    "errorMsg": "The Billing ID has to be a valid number!"
+                                }
+                            ]
+                        },
+                        {
+                            "field": "platform_id",
+                            "label": "Platform ID",
+                            "type": "text",
+                            "required": true,
+                            "help": "Enter the Platform ID",
+                            "defaultValue": "3",
+                            "validators": [
+                                {
+                                    "type": "number",
+                                    "range": [
+                                        1,
+                                        100
+                                    ],
+                                    "errorMsg": "The Platform ID has to be a valid number!"
+                                }
+                            ]
+                        },
+                        {
+                            "field": "app_id",
+                            "label": "App ID",
+                            "type": "text",
+                            "required": true,
+                            "help": "Enter the App ID",
+                            "validators": [
+                                {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 8192,
+                                    "errorMsg": "Length of App ID should be between 1 and 8192 characters"
+                                }
+                            ]
+                        },
+                        {
+                            "field": "app_version",
+                            "label": "App Version",
+                            "type": "text",
+                            "required": true,
+                            "help": "Enter the App Version",
+                            "validators": [
+                                {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 8192,
+                                    "errorMsg": "Length of App Version should be between 1 and 8192 characters"
+                                }
+                            ]
+                        },
+                        {
+                            "field": "app_access_key",
+                            "label": "App Access Key",
+                            "type": "text",
+                            "encrypted": true,
+                            "required": true,
+                            "help": "Enter the App Access Key",
+                            "validators": [
+                                {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 8192,
+                                    "errorMsg": "Length of App Access Key should be between 1 and 8192 characters"
+                                }
+                            ]
+                        },
+                        {
+                            "field": "username",
+                            "label": "Username",
+                            "type": "text",
+                            "required": true,
+                            "help": "Enter the username for this account",
+                            "validators": [
+                                {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 8192,
+                                    "errorMsg": "Length of username should be between 1 and 8192"
+                                }
+                            ]
+                        },
+                        {
+                            "field": "password",
+                            "label": "Password",
+                            "type": "text",
+                            "encrypted": true,
+                            "required": true,
+                            "help": "Enter the password for this account",
+                            "validators": [
+                                {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 8192,
+                                    "errorMsg": "Length of password should be between 1 and 8192 characters"
+                                }
+                            ]
+                        },
+                        {
+                            "field": "verify",
+                            "label": "Verify Certificate",
+                            "help": "Whether to verify the SSL certificate of the API host",
+                            "required": true,
+                            "type": "radio",
+                            "defaultValue": "Yes",
+                            "options": {
+                                "items": [
+                                    {
+                                        "value": "Yes",
+                                        "label": "Yes"
+                                    },
+                                    {
+                                        "value": "No",
+                                        "label": "No"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "loggingTab"
+                }
+            ]
+        },
+        "inputs": {
+            "title": "Inputs",
+            "description": "Manage your data inputs",
+            "table": {
+                "header": [
+                    {
+                        "field": "name",
+                        "label": "Name"
+                    },
+                    {
+                        "field": "interval",
+                        "label": "Interval"
+                    },
+                    {
+                        "field": "index",
+                        "label": "Index"
+                    },
+                    {
+                        "field": "disabled",
+                        "label": "Status"
+                    }
+                ],
+                "moreInfo": [
+                    {
+                        "field": "name",
+                        "label": "Name"
+                    },
+                    {
+                        "field": "interval",
+                        "label": "Interval"
+                    },
+                    {
+                        "field": "index",
+                        "label": "Index"
+                    },
+                    {
+                        "field": "disabled",
+                        "label": "Status"
+                    },
+                    {
+                        "field": "maas360_account",
+                        "label": "MaaS360 Account"
+                    },
+                    {
+                        "field": "device_status",
+                        "label": "Device Status"
+                    },
+                    {
+                        "field": "platform",
+                        "label": "Platform"
+                    },
+                    {
+                        "field": "managed_status",
+                        "label": "MaaS360 Managed Status"
+                    },
+                    {
+                        "field": "plc_compliance",
+                        "label": "Policy Compliance"
+                    },
+                    {
+                        "field": "rule_compliance",
+                        "label": "Rule Compliance"
+                    },
+                    {
+                        "field": "app_compliance",
+                        "label": "App Compliance"
+                    },
+                    {
+                        "field": "pswd_compliance",
+                        "label": "Password Compliance"
+                    }
+                ],
+                "actions": [
+                    "edit",
+                    "delete",
+                    "clone"
+                ]
+            },
+            "services": [
+                {
+                    "name": "device",
+                    "title": "Device",
+                    "inputHelperModule": "input_device",
+                    "entity": [
+                        {
+                            "field": "name",
+                            "label": "Name",
+                            "type": "text",
+                            "help": "Enter a unique name for the data input",
+                            "required": true,
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "pattern": "^[a-zA-Z]\\w*$",
+                                    "errorMsg": "Input Name must start with a letter and followed by alphabetic letters, digits or underscores."
+                                },
+                                {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 100,
+                                    "errorMsg": "Length of input name should be between 1 and 100"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "interval",
+                            "field": "interval",
+                            "label": "Interval",
+                            "help": "Time interval of input in seconds.",
+                            "required": true,
+                            "defaultValue": "86400"
+                        },
+                        {
+                            "field": "index",
+                            "label": "Index",
+                            "type": "singleSelect",
+                            "defaultValue": "default",
+                            "options": {
+                                "endpointUrl": "data/indexes",
+                                "createSearchChoice": true,
+                                "denyList": "^_.*$"
+                            },
+                            "required": true,
+                            "validators": [
+                                {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 80,
+                                    "errorMsg": "Length of index name should be between 1 and 80."
+                                }
+                            ]
+                        },
+                        {
+                            "field": "maas360_account",
+                            "label": "MaaS360 Account",
+                            "help": "Global account to use for MaaS360 input",
+                            "required": true,
+                            "type": "singleSelect",
+                            "options": {
+                                "referenceName": "account"
+                            }
+                        },
+                        {
+                            "field": "device_status",
+                            "label": "Device Status",
+                            "help": "Filter devices based on their status",
+                            "required": true,
+                            "type": "singleSelect",
+                            "defaultValue": "ALL",
+                            "options": {
+                                "disableSearch": true,
+                                "autoCompleteFields": [
+                                    {
+                                        "value": "ALL",
+                                        "label": "ALL"
+                                    },
+                                    {
+                                        "value": "Active",
+                                        "label": "Active"
+                                    },
+                                    {
+                                        "value": "Inactive",
+                                        "label": "Inactive"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "field": "platform",
+                            "label": "Platform",
+                            "help": "Filter devices based on their platform",
+                            "required": true,
+                            "type": "singleSelect",
+                            "defaultValue": "ALL",
+                            "options": {
+                                "disableSearch": true,
+                                "autoCompleteFields": [
+                                    {
+                                        "value": "ALL",
+                                        "label": "ALL"
+                                    },
+                                    {
+                                        "value": "Windows",
+                                        "label": "Windows"
+                                    },
+                                    {
+                                        "value": "Mac",
+                                        "label": "Mac"
+                                    },
+                                    {
+                                        "value": "iOS",
+                                        "label": "iOS"
+                                    },
+                                    {
+                                        "value": "BlackBerry",
+                                        "label": "BlackBerry"
+                                    },
+                                    {
+                                        "value": "Android",
+                                        "label": "Android"
+                                    },
+                                    {
+                                        "value": "Windows Mobile",
+                                        "label": "Windows Mobile"
+                                    },
+                                    {
+                                        "value": "Symbian",
+                                        "label": "Symbian"
+                                    },
+                                    {
+                                        "value": "Windows Phone 7",
+                                        "label": "Windows Phone 7"
+                                    },
+                                    {
+                                        "value": "Others",
+                                        "label": "Others"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "field": "managed_status",
+                            "label": "MaaS360 Managed Status",
+                            "help": "Filter devices based on their MaaS360 managed status",
+                            "required": true,
+                            "type": "singleSelect",
+                            "defaultValue": "ALL",
+                            "options": {
+                                "disableSearch": true,
+                                "autoCompleteFields": [
+                                    {
+                                        "value": "ALL",
+                                        "label": "ALL"
+                                    },
+                                    {
+                                        "value": "Inactive",
+                                        "label": "Inactive"
+                                    },
+                                    {
+                                        "value": "Activated",
+                                        "label": "Activated"
+                                    },
+                                    {
+                                        "value": "Control Removed",
+                                        "label": "Control Removed"
+                                    },
+                                    {
+                                        "value": "Pending Control Removed",
+                                        "label": "Pending Control Removed"
+                                    },
+                                    {
+                                        "value": "User Removed Control",
+                                        "label": "User Removed Control"
+                                    },
+                                    {
+                                        "value": "Not Enrolled",
+                                        "label": "Not Enrolled"
+                                    },
+                                    {
+                                        "value": "Enrolled",
+                                        "label": "Enrolled"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "field": "plc_compliance",
+                            "label": "Policy Compliance",
+                            "help": "Filter devices based on their policy compliance status",
+                            "required": true,
+                            "type": "radio",
+                            "defaultValue": "ALL",
+                            "options": {
+                                "items": [
+                                    {
+                                        "value": "ALL",
+                                        "label": "ALL"
+                                    },
+                                    {
+                                        "value": "OOC",
+                                        "label": "OOC"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "field": "rule_compliance",
+                            "label": "Rule Compliance",
+                            "help": "Filter devices based on their rule compliance status",
+                            "required": true,
+                            "type": "radio",
+                            "defaultValue": "ALL",
+                            "options": {
+                                "items": [
+                                    {
+                                        "value": "ALL",
+                                        "label": "ALL"
+                                    },
+                                    {
+                                        "value": "OOC",
+                                        "label": "OOC"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "field": "app_compliance",
+                            "label": "App Compliance",
+                            "help": "Filter devices based on their app compliance status",
+                            "required": true,
+                            "type": "radio",
+                            "defaultValue": "ALL",
+                            "options": {
+                                "items": [
+                                    {
+                                        "value": "ALL",
+                                        "label": "ALL"
+                                    },
+                                    {
+                                        "value": "OOC",
+                                        "label": "OOC"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "field": "pswd_compliance",
+                            "label": "Password Compliance",
+                            "help": "Filter devices based on their password compliance status",
+                            "required": true,
+                            "type": "radio",
+                            "defaultValue": "ALL",
+                            "options": {
+                                "items": [
+                                    {
+                                        "value": "ALL",
+                                        "label": "ALL"
+                                    },
+                                    {
+                                        "value": "OOC",
+                                        "label": "OOC"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "compliance_events",
+                    "title": "Compliance Events",
+                    "inputHelperModule": "input_compliance_events",
+                    "entity": [
+                        {
+                            "field": "name",
+                            "label": "Name",
+                            "type": "text",
+                            "help": "Enter a unique name for the data input",
+                            "required": true,
+                            "validators": [
+                                {
+                                    "type": "regex",
+                                    "pattern": "^[a-zA-Z]\\w*$",
+                                    "errorMsg": "Input Name must start with a letter and followed by alphabetic letters, digits or underscores."
+                                },
+                                {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 100,
+                                    "errorMsg": "Length of input name should be between 1 and 100"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "interval",
+                            "field": "interval",
+                            "label": "Interval",
+                            "help": "Time interval of input in seconds.",
+                            "required": true,
+                            "defaultValue": "1800"
+                        },
+                        {
+                            "field": "index",
+                            "label": "Index",
+                            "type": "singleSelect",
+                            "defaultValue": "default",
+                            "options": {
+                                "endpointUrl": "data/indexes",
+                                "createSearchChoice": true,
+                                "denyList": "^_.*$"
+                            },
+                            "required": true,
+                            "validators": [
+                                {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 80,
+                                    "errorMsg": "Length of index name should be between 1 and 80."
+                                }
+                            ]
+                        },
+                        {
+                            "field": "maas360_account",
+                            "label": "MaaS360 Account",
+                            "help": "Global account to use for MaaS360 input",
+                            "required": true,
+                            "type": "singleSelect",
+                            "options": {
+                                "referenceName": "account"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
